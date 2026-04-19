@@ -11,8 +11,6 @@
 
   <link rel="stylesheet" href="src/base.css"/>
   <link rel="stylesheet" href="src/v1.css"/>
-  <link rel="stylesheet" href="src/v2.css"/>
-  <link rel="stylesheet" href="src/v3.css"/>
 
   <style>
     /* Font family tweaks (Tweak: typeface) */
@@ -25,13 +23,6 @@
     [data-accent="electric"]   { --accent-blue: oklch(0.72 0.18 230); --accent-green: oklch(0.82 0.16 155); }
     [data-accent="muted"]      { --accent-blue: oklch(0.62 0.08 235); --accent-green: oklch(0.62 0.07 160); }
     [data-accent="mono"]       { --accent-blue: var(--ink-500); --accent-green: var(--ink-500); }
-
-    /* Variation switch — show only active */
-    .variation { display: none; }
-    .variation.active { display: block; }
-
-    /* Hide chrome on print */
-    @media print { .variation { display: block !important; } }
 
     body { transition: background 0.3s var(--ease), color 0.3s var(--ease); }
   </style>
@@ -50,19 +41,6 @@
       <button class="pill" data-theme-btn="dark" aria-pressed="false" title="Dark">☾</button>
     </div>
   </div>
-
-  <!-- Variation selector -->
-  <nav class="variation-selector" aria-label="Variation">
-    <button class="variation-btn" data-var="v1" aria-pressed="true">
-      <span>V1</span><span class="tag">engineer</span>
-    </button>
-    <button class="variation-btn" data-var="v2" aria-pressed="false">
-      <span>V2</span><span class="tag">editorial</span>
-    </button>
-    <button class="variation-btn" data-var="v3" aria-pressed="false">
-      <span>V3</span><span class="tag">aerospace</span>
-    </button>
-  </nav>
 
   <!-- Tweaks panel (hidden; opens via toolbar toggle) -->
   <aside class="tweaks-panel" id="tweaks-panel">
@@ -107,33 +85,22 @@
         <button data-value="de" aria-pressed="false">DE</button>
       </div>
     </div>
-    <div class="row">
-      <span class="label">Variation</span>
-      <div class="seg" data-tweak="variation">
-        <button data-value="v1" aria-pressed="true">V1</button>
-        <button data-value="v2" aria-pressed="false">V2</button>
-        <button data-value="v3" aria-pressed="false">V3</button>
-      </div>
-    </div>
   </aside>
 
   <!-- Edit-mode defaults -->
   <script>
     const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
       "theme": "light",
-      "density": "compact",
-      "accent": "mono",
+      "density": "normal",
+      "accent": "blue-green",
       "typeface": "modern",
-      "lang": "pt",
-      "variation": "v1"
+      "lang": "pt"
     }/*EDITMODE-END*/;
   </script>
 
-  <!-- Mount points (React will hydrate into .variation containers) -->
+  <!-- Mount point -->
   <main>
-    <div class="variation active" id="mount-v1" data-var-root="v1"></div>
-    <div class="variation" id="mount-v2" data-var-root="v2"></div>
-    <div class="variation" id="mount-v3" data-var-root="v3"></div>
+    <div id="mount-v1"></div>
   </main>
 
   <!-- React -->
@@ -142,9 +109,246 @@
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
   <script src="src/content.js"></script>
-  <script type="text/babel" src="src/V1.jsx"></script>
-  <script type="text/babel" src="src/V2.jsx"></script>
-  <script type="text/babel" src="src/V3.jsx"></script>
+
+  <!-- V1 component (inlined so it works when opened via file://) -->
+  <script type="text/babel">
+    const V1 = ({ t, lang }) => {
+      const c = t.contact;
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const ts = `${now.getUTCFullYear()}-${pad(now.getUTCMonth()+1)}-${pad(now.getUTCDate())} ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())} UTC`;
+
+      const [copied, setCopied] = React.useState(null);
+      const copy = (val, key) => {
+        navigator.clipboard?.writeText(val);
+        setCopied(key);
+        setTimeout(() => setCopied(null), 1400);
+      };
+
+      const dovName = "Dovilio Ferrari Neto";
+
+      return (
+        <div className="v1">
+          <div className="v1-topstrip">
+            <div className="container">
+              <div className="cell"><span className="dot"></span><span>{t.status}</span></div>
+              <div className="cell"><span>{t.location}</span></div>
+              <div className="cell"><span>REV 2026.04 · {ts}</span></div>
+            </div>
+          </div>
+
+          <section className="v1-hero">
+            <div className="container">
+              <div>
+                <div className="meta">
+                  <span>DFN · 01</span>
+                  <span>{t.role}</span>
+                  <span>EST. 2015</span>
+                </div>
+                <h1>
+                  Dovilio<br/>
+                  <span className="line2">Ferrari Neto.</span>
+                </h1>
+                <p className="tagline">{t.tagline}</p>
+                <div className="cta-row">
+                  <a href={`mailto:${c.email}`} className="v1-btn primary">
+                    {t.ui.sendEmail} →
+                  </a>
+                  <a href={c.linkedinUrl} target="_blank" rel="noopener" className="v1-btn">
+                    LinkedIn ↗
+                  </a>
+                  <button className="v1-btn" onClick={() => window.print()}>
+                    {t.sections.download}
+                  </button>
+                </div>
+              </div>
+              <div className="v1-portrait">
+                <img src="assets/dovilio.jpg" alt={dovName} />
+                <div className="tag">
+                  <span>DFN</span>
+                  <span>SÃO PAULO · BR</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-stats">
+            <div className="container">
+              <div className="v1-stat">
+                <div className="n">4<span className="plus">+</span></div>
+                <div className="l">{t.ui.yearsExperience}</div>
+              </div>
+              <div className="v1-stat">
+                <div className="n">4</div>
+                <div className="l">{t.ui.languagesSpoken}</div>
+              </div>
+              <div className="v1-stat">
+                <div className="n">2</div>
+                <div className="l">{lang === "pt" ? "OEMs globais (VW, MB)" : lang === "de" ? "globale OEMs (VW, MB)" : "global OEMs (VW, MB)"}</div>
+              </div>
+              <div className="v1-stat">
+                <div className="n">DE<span style={{color:"var(--fg-dim)"}}>/</span>BR</div>
+                <div className="l">{t.ui.continents}</div>
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-section v1-about" id="about">
+            <div className="container">
+              <div className="header">
+                <div className="section-label">01 · {t.sections.about}</div>
+                <h2>{t.about.title}</h2>
+              </div>
+              <div className="body">
+                <div></div>
+                <p className="lede">{t.about.body}</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-section" id="experience">
+            <div className="container">
+              <div className="header">
+                <div className="section-label">02 · {t.sections.experience}</div>
+                <h2>{lang === "pt" ? "Onde atuei." : lang === "de" ? "Wo ich gearbeitet habe." : "Where I've worked."}</h2>
+              </div>
+              {t.experience.map((e, i) => (
+                <div className="v1-exp-item" key={i}>
+                  <div className="when">
+                    <div>{e.period}</div>
+                    {e.status && <span className="badge">{e.status}</span>}
+                  </div>
+                  <div>
+                    <div className="role">{e.role}</div>
+                    <div className="company">
+                      {e.company}<span className="loc">{e.location}</span>
+                    </div>
+                    <div className="bullets">
+                      {e.bullets.map((b, j) => (
+                        <div className="bullet" key={j}>
+                          <div className="k">{b.label}</div>
+                          <div className="t">{b.text}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="v1-section" id="skills">
+            <div className="container">
+              <div className="header">
+                <div className="section-label">03 · {t.sections.skills}</div>
+                <h2>{lang === "pt" ? "Stack técnica." : lang === "de" ? "Technischer Stack." : "Technical stack."}</h2>
+              </div>
+              <div className="v1-skills-grid">
+                {t.skills.technical.map((s, i) => (
+                  <div className="v1-skill" key={i}>
+                    <div className="k">{s.k}</div>
+                    <div className="v">{s.v}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="v1-soft">
+                {t.skills.soft.map((s, i) => <span key={i}>{s}</span>)}
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-section" id="languages">
+            <div className="container">
+              <div className="header">
+                <div className="section-label">04 · {t.sections.languages} / {t.sections.education}</div>
+                <h2>{lang === "pt" ? "Idiomas e formação." : lang === "de" ? "Sprachen und Ausbildung." : "Languages and education."}</h2>
+              </div>
+              <div className="v1-two-col">
+                <div className="v1-block">
+                  <h3>{t.sections.languages}</h3>
+                  {t.languages.map((l, i) => (
+                    <div className="v1-lang-row" key={i}>
+                      <div className="lang">{l.lang}</div>
+                      <div className="level">{l.level}</div>
+                      <div className="inst">{l.inst}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="v1-block">
+                  <h3>{t.sections.education}</h3>
+                  {t.education.map((e, i) => (
+                    <div className="v1-edu" key={i}>
+                      <div className="degree">{e.degree}</div>
+                      <div className="school">{e.school} · {e.year}</div>
+                    </div>
+                  ))}
+                  <h3 style={{marginTop: 32}}>{t.sections.certifications}</h3>
+                  {t.certifications.map((cert, i) => (
+                    <div className="v1-cert" key={i}>
+                      <div className="name">{cert.name}</div>
+                      <div className="issuer">{cert.issuer}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-section" id="interests">
+            <div className="container">
+              <div className="header">
+                <div className="section-label">05 · {t.sections.interests}</div>
+                <h2>{lang === "pt" ? "Fora do escritório." : lang === "de" ? "Außerhalb des Büros." : "Outside the office."}</h2>
+              </div>
+              <div className="v1-skills-grid" style={{gridTemplateColumns: "repeat(3, 1fr)"}}>
+                {t.interests.map((it, i) => (
+                  <div className="v1-skill" key={i}>
+                    <div className="k">{it.k}</div>
+                    <div className="v">{it.v}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="v1-contact" id="contact">
+            <div className="container">
+              <div className="section-label" style={{marginBottom: 32}}>06 · {t.sections.contact}</div>
+              <h2>
+                {lang === "pt" ? "Vamos conversar." : lang === "de" ? "Sprechen wir." : "Let's talk."}
+              </h2>
+              <div className="grid">
+                <button className="v1-contact-card" onClick={() => copy(c.email, "email")}>
+                  <div className="label">Email</div>
+                  <div className="value">{c.email}</div>
+                  <div className="action">{copied === "email" ? t.ui.copied + " ✓" : t.ui.copy + " →"}</div>
+                </button>
+                <button className="v1-contact-card" onClick={() => copy(c.phone, "phone")}>
+                  <div className="label">{t.ui.call}</div>
+                  <div className="value">{c.phone}</div>
+                  <div className="action">{copied === "phone" ? t.ui.copied + " ✓" : t.ui.copy + " →"}</div>
+                </button>
+                <a className="v1-contact-card" href={c.linkedinUrl} target="_blank" rel="noopener">
+                  <div className="label">LinkedIn</div>
+                  <div className="value">/dovilio-ferrari-neto</div>
+                  <div className="action">{t.ui.openLinkedIn} ↗</div>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <footer className="v1-footer">
+            <div className="container">
+              <div>© {now.getFullYear()} Dovilio Ferrari Neto</div>
+              <div>v1 · engineering-brief</div>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    window.V1 = V1;
+  </script>
 
   <script type="text/babel">
     // ========================================================
@@ -157,22 +361,14 @@
       accent: localStorage.getItem("dfn.accent") || TWEAK_DEFAULTS.accent,
       typeface: localStorage.getItem("dfn.typeface") || TWEAK_DEFAULTS.typeface,
       lang: localStorage.getItem("dfn.lang") || TWEAK_DEFAULTS.lang,
-      variation: localStorage.getItem("dfn.variation") || TWEAK_DEFAULTS.variation,
     };
 
     function applyState() {
       const b = document.body;
-      // v3 forces dark regardless of user choice
-      const effectiveTheme = state.variation === "v3" ? "dark" : state.theme;
-      b.setAttribute("data-theme", effectiveTheme);
+      b.setAttribute("data-theme", state.theme);
       b.setAttribute("data-density", state.density);
       b.setAttribute("data-accent", state.accent);
       b.setAttribute("data-typeface", state.typeface);
-
-      // Variation visibility
-      document.querySelectorAll(".variation").forEach(el => {
-        el.classList.toggle("active", el.dataset.varRoot === state.variation);
-      });
 
       // Update pill pressed states
       document.querySelectorAll("[data-lang-btn]").forEach(b => {
@@ -180,9 +376,6 @@
       });
       document.querySelectorAll("[data-theme-btn]").forEach(b => {
         b.setAttribute("aria-pressed", b.dataset.themeBtn === state.theme);
-      });
-      document.querySelectorAll("[data-var]").forEach(b => {
-        b.setAttribute("aria-pressed", b.dataset.var === state.variation);
       });
       // Tweak segs
       document.querySelectorAll("[data-tweak]").forEach(seg => {
@@ -198,7 +391,6 @@
       localStorage.setItem("dfn." + key, val);
       applyState();
       render();
-      // Inform host for persistence
       try {
         const edits = {};
         edits[key] = val;
@@ -206,24 +398,13 @@
       } catch (e) {}
     }
 
+    let v1Root = null;
     function render() {
+      if (!window.V1 || !window.CONTENT) return;
       const t = window.CONTENT[state.lang];
-      const mountMap = {
-        v1: { el: document.getElementById("mount-v1"), Comp: window.V1 },
-        v2: { el: document.getElementById("mount-v2"), Comp: window.V2 },
-        v3: { el: document.getElementById("mount-v3"), Comp: window.V3 },
-      };
-      // Only render the active variation (saves CPU)
-      Object.entries(mountMap).forEach(([k, m]) => {
-        if (!m.Comp) return;
-        if (!m._root) m._root = ReactDOM.createRoot(m.el);
-        if (k === state.variation) {
-          m._root.render(React.createElement(m.Comp, { t, lang: state.lang }));
-        } else {
-          // Clear inactive to save memory
-          m._root.render(null);
-        }
-      });
+      const el = document.getElementById("mount-v1");
+      if (!v1Root) v1Root = ReactDOM.createRoot(el);
+      v1Root.render(React.createElement(window.V1, { t, lang: state.lang }));
     }
 
     // Wire up buttons
@@ -232,9 +413,6 @@
     });
     document.querySelectorAll("[data-theme-btn]").forEach(b => {
       b.addEventListener("click", () => persist("theme", b.dataset.themeBtn));
-    });
-    document.querySelectorAll("[data-var]").forEach(b => {
-      b.addEventListener("click", () => persist("variation", b.dataset.var));
     });
     document.querySelectorAll("[data-tweak]").forEach(seg => {
       const key = seg.dataset.tweak;
@@ -260,15 +438,12 @@
         render();
       }
     });
-    // Announce availability AFTER listener is registered
     try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch (e) {}
 
-    // Initial render (wait a tick for Babel to populate V1/V2/V3)
     requestAnimationFrame(() => {
       applyState();
       render();
     });
-    // Fallback re-render once all Babel scripts have executed
     window.addEventListener("load", () => { applyState(); render(); });
   </script>
 </body>
