@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Dovilio Ferrari Neto — Test Engineer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="src/base.css"/>
+  <link rel="stylesheet" href="src/v1.css"/>
+  <link rel="stylesheet" href="src/v2.css"/>
+  <link rel="stylesheet" href="src/v3.css"/>
+
+  <style>
+    /* Font family tweaks (Tweak: typeface) */
+    [data-typeface="modern"] { --font-display: "Inter Tight", system-ui, sans-serif; --font-text: "Inter", system-ui, sans-serif; }
+    [data-typeface="grotesk"] { --font-display: "Space Grotesk", system-ui, sans-serif; --font-text: "Space Grotesk", system-ui, sans-serif; }
+    [data-typeface="editorial"] { --font-display: "Instrument Serif", Georgia, serif; --font-text: "Inter", system-ui, sans-serif; }
+
+    /* Accent tweak overrides */
+    [data-accent="blue-green"] { --accent-blue: oklch(0.70 0.14 240); --accent-green: oklch(0.74 0.12 160); }
+    [data-accent="electric"]   { --accent-blue: oklch(0.72 0.18 230); --accent-green: oklch(0.82 0.16 155); }
+    [data-accent="muted"]      { --accent-blue: oklch(0.62 0.08 235); --accent-green: oklch(0.62 0.07 160); }
+    [data-accent="mono"]       { --accent-blue: var(--ink-500); --accent-green: var(--ink-500); }
+
+    /* Variation switch — show only active */
+    .variation { display: none; }
+    .variation.active { display: block; }
+
+    /* Hide chrome on print */
+    @media print { .variation { display: block !important; } }
+
+    body { transition: background 0.3s var(--ease), color 0.3s var(--ease); }
+  </style>
+</head>
+<body data-screen-label="Dovilio Portfolio" data-theme="light" data-density="normal" data-accent="blue-green" data-typeface="modern">
+
+  <!-- Top chrome: lang + theme -->
+  <div class="chrome">
+    <div class="pill-group" role="group" aria-label="Language">
+      <button class="pill" data-lang-btn="pt" aria-pressed="true">PT</button>
+      <button class="pill" data-lang-btn="en" aria-pressed="false">EN</button>
+      <button class="pill" data-lang-btn="de" aria-pressed="false">DE</button>
+    </div>
+    <div class="pill-group" role="group" aria-label="Theme">
+      <button class="pill" data-theme-btn="light" aria-pressed="true" title="Light">☀</button>
+      <button class="pill" data-theme-btn="dark" aria-pressed="false" title="Dark">☾</button>
+    </div>
+  </div>
+
+  <!-- Variation selector -->
+  <nav class="variation-selector" aria-label="Variation">
+    <button class="variation-btn" data-var="v1" aria-pressed="true">
+      <span>V1</span><span class="tag">engineer</span>
+    </button>
+    <button class="variation-btn" data-var="v2" aria-pressed="false">
+      <span>V2</span><span class="tag">editorial</span>
+    </button>
+    <button class="variation-btn" data-var="v3" aria-pressed="false">
+      <span>V3</span><span class="tag">aerospace</span>
+    </button>
+  </nav>
+
+  <!-- Tweaks panel (hidden; opens via toolbar toggle) -->
+  <aside class="tweaks-panel" id="tweaks-panel">
+    <h4>Tweaks</h4>
+    <div class="row">
+      <span class="label">Theme</span>
+      <div class="seg" data-tweak="theme">
+        <button data-value="light" aria-pressed="true">Light</button>
+        <button data-value="dark" aria-pressed="false">Dark</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">Density</span>
+      <div class="seg" data-tweak="density">
+        <button data-value="compact" aria-pressed="false">Compact</button>
+        <button data-value="normal" aria-pressed="true">Normal</button>
+        <button data-value="spacious" aria-pressed="false">Wide</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">Accent</span>
+      <div class="seg" data-tweak="accent">
+        <button data-value="blue-green" aria-pressed="true">BL·GR</button>
+        <button data-value="electric" aria-pressed="false">EL</button>
+        <button data-value="muted" aria-pressed="false">MT</button>
+        <button data-value="mono" aria-pressed="false">MN</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">Typeface</span>
+      <div class="seg" data-tweak="typeface">
+        <button data-value="modern" aria-pressed="true">Inter</button>
+        <button data-value="grotesk" aria-pressed="false">Grotesk</button>
+        <button data-value="editorial" aria-pressed="false">Serif</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">Language</span>
+      <div class="seg" data-tweak="lang">
+        <button data-value="pt" aria-pressed="true">PT</button>
+        <button data-value="en" aria-pressed="false">EN</button>
+        <button data-value="de" aria-pressed="false">DE</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="label">Variation</span>
+      <div class="seg" data-tweak="variation">
+        <button data-value="v1" aria-pressed="true">V1</button>
+        <button data-value="v2" aria-pressed="false">V2</button>
+        <button data-value="v3" aria-pressed="false">V3</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Edit-mode defaults -->
+  <script>
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "theme": "light",
+      "density": "compact",
+      "accent": "mono",
+      "typeface": "modern",
+      "lang": "pt",
+      "variation": "v1"
+    }/*EDITMODE-END*/;
+  </script>
+
+  <!-- Mount points (React will hydrate into .variation containers) -->
+  <main>
+    <div class="variation active" id="mount-v1" data-var-root="v1"></div>
+    <div class="variation" id="mount-v2" data-var-root="v2"></div>
+    <div class="variation" id="mount-v3" data-var-root="v3"></div>
+  </main>
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script src="src/content.js"></script>
+  <script type="text/babel" src="src/V1.jsx"></script>
+  <script type="text/babel" src="src/V2.jsx"></script>
+  <script type="text/babel" src="src/V3.jsx"></script>
+
+  <script type="text/babel">
+    // ========================================================
+    // App shell: state, listener, render, tweaks
+    // ========================================================
+
+    const state = {
+      theme: localStorage.getItem("dfn.theme") || TWEAK_DEFAULTS.theme,
+      density: localStorage.getItem("dfn.density") || TWEAK_DEFAULTS.density,
+      accent: localStorage.getItem("dfn.accent") || TWEAK_DEFAULTS.accent,
+      typeface: localStorage.getItem("dfn.typeface") || TWEAK_DEFAULTS.typeface,
+      lang: localStorage.getItem("dfn.lang") || TWEAK_DEFAULTS.lang,
+      variation: localStorage.getItem("dfn.variation") || TWEAK_DEFAULTS.variation,
+    };
+
+    function applyState() {
+      const b = document.body;
+      // v3 forces dark regardless of user choice
+      const effectiveTheme = state.variation === "v3" ? "dark" : state.theme;
+      b.setAttribute("data-theme", effectiveTheme);
+      b.setAttribute("data-density", state.density);
+      b.setAttribute("data-accent", state.accent);
+      b.setAttribute("data-typeface", state.typeface);
+
+      // Variation visibility
+      document.querySelectorAll(".variation").forEach(el => {
+        el.classList.toggle("active", el.dataset.varRoot === state.variation);
+      });
+
+      // Update pill pressed states
+      document.querySelectorAll("[data-lang-btn]").forEach(b => {
+        b.setAttribute("aria-pressed", b.dataset.langBtn === state.lang);
+      });
+      document.querySelectorAll("[data-theme-btn]").forEach(b => {
+        b.setAttribute("aria-pressed", b.dataset.themeBtn === state.theme);
+      });
+      document.querySelectorAll("[data-var]").forEach(b => {
+        b.setAttribute("aria-pressed", b.dataset.var === state.variation);
+      });
+      // Tweak segs
+      document.querySelectorAll("[data-tweak]").forEach(seg => {
+        const key = seg.dataset.tweak;
+        seg.querySelectorAll("button").forEach(b => {
+          b.setAttribute("aria-pressed", b.dataset.value === state[key]);
+        });
+      });
+    }
+
+    function persist(key, val) {
+      state[key] = val;
+      localStorage.setItem("dfn." + key, val);
+      applyState();
+      render();
+      // Inform host for persistence
+      try {
+        const edits = {};
+        edits[key] = val;
+        window.parent.postMessage({type: "__edit_mode_set_keys", edits}, "*");
+      } catch (e) {}
+    }
+
+    function render() {
+      const t = window.CONTENT[state.lang];
+      const mountMap = {
+        v1: { el: document.getElementById("mount-v1"), Comp: window.V1 },
+        v2: { el: document.getElementById("mount-v2"), Comp: window.V2 },
+        v3: { el: document.getElementById("mount-v3"), Comp: window.V3 },
+      };
+      // Only render the active variation (saves CPU)
+      Object.entries(mountMap).forEach(([k, m]) => {
+        if (!m.Comp) return;
+        if (!m._root) m._root = ReactDOM.createRoot(m.el);
+        if (k === state.variation) {
+          m._root.render(React.createElement(m.Comp, { t, lang: state.lang }));
+        } else {
+          // Clear inactive to save memory
+          m._root.render(null);
+        }
+      });
+    }
+
+    // Wire up buttons
+    document.querySelectorAll("[data-lang-btn]").forEach(b => {
+      b.addEventListener("click", () => persist("lang", b.dataset.langBtn));
+    });
+    document.querySelectorAll("[data-theme-btn]").forEach(b => {
+      b.addEventListener("click", () => persist("theme", b.dataset.themeBtn));
+    });
+    document.querySelectorAll("[data-var]").forEach(b => {
+      b.addEventListener("click", () => persist("variation", b.dataset.var));
+    });
+    document.querySelectorAll("[data-tweak]").forEach(seg => {
+      const key = seg.dataset.tweak;
+      seg.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("click", () => persist(key, btn.dataset.value));
+      });
+    });
+
+    // Edit-mode protocol (Tweaks toggle)
+    const tweaksPanel = document.getElementById("tweaks-panel");
+    window.addEventListener("message", (ev) => {
+      const d = ev.data || {};
+      if (d.type === "__activate_edit_mode") tweaksPanel.classList.add("open");
+      else if (d.type === "__deactivate_edit_mode") tweaksPanel.classList.remove("open");
+      else if (d.type === "__edit_mode_set_keys" && d.edits) {
+        Object.entries(d.edits).forEach(([k, v]) => {
+          if (k in state) {
+            state[k] = v;
+            localStorage.setItem("dfn." + k, v);
+          }
+        });
+        applyState();
+        render();
+      }
+    });
+    // Announce availability AFTER listener is registered
+    try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch (e) {}
+
+    // Initial render (wait a tick for Babel to populate V1/V2/V3)
+    requestAnimationFrame(() => {
+      applyState();
+      render();
+    });
+    // Fallback re-render once all Babel scripts have executed
+    window.addEventListener("load", () => { applyState(); render(); });
+  </script>
+</body>
+</html>
