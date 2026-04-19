@@ -529,3 +529,73 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+
+/* Interests grid — 3 items on desktop, collapses cleanly on mobile */
+.v1-interests { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .v1-interests { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .v1-interests { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   MOBILE OPTIMIZATIONS
+   ============================================================ */
+
+/* Tablets and below */
+@media (max-width: 700px) {
+  .v1-hero { padding: var(--gap-lg) 0 var(--gap-md); }
+  .v1-hero .container { gap: var(--gap-md); }
+  .v1-hero .meta { gap: 16px; margin-bottom: var(--gap-md); font-size: 10px; }
+  .v1-hero .meta span::before { width: 8px; margin-right: 8px; }
+  .v1-hero .tagline { font-size: 17px; margin-bottom: var(--gap-md); }
+
+  .v1-section { padding: var(--gap-lg) 0; }
+  .v1-section .header { margin-bottom: var(--gap-md); }
+
+  .v1-about .body .lede { font-size: 18px; }
+
+  .v1-stat .n { font-size: 36px; }
+
+  .v1-exp-item { padding: var(--gap) 0; gap: 16px; }
+  .v1-exp-item .role { font-size: 22px; }
+  .v1-exp-item .company { font-size: 13px; margin-bottom: 16px; }
+  .v1-exp-item .bullet { padding-left: 12px; }
+  .v1-exp-item .bullet .t { font-size: 14px; }
+
+  .v1-skill { padding: 18px 16px; }
+  .v1-skill .k { font-size: 18px; }
+
+  .v1-soft span { padding: 6px 12px; font-size: 11px; }
+
+  .v1-contact { padding: var(--gap-lg) 0; }
+  .v1-contact-card { padding: 20px; }
+  .v1-contact-card .value { font-size: 18px; }
+
+  .v1-footer .container { flex-direction: column; gap: 6px; }
+}
+
+/* Phones */
+@media (max-width: 520px) {
+  /* Portrait — cap height and center so it doesn't dominate the hero */
+  .v1-portrait { aspect-ratio: 4/5; max-width: 340px; margin: 0 auto; width: 100%; }
+
+  /* Top strip — stack into rows, tighter */
+  .v1-topstrip { padding: 10px 0; font-size: 10px; }
+  .v1-topstrip .container { gap: 6px 16px; }
+
+  /* CTAs — full-width so they don't wrap mid-word */
+  .v1-hero .cta-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .v1-btn { justify-content: center; padding: 14px 18px; }
+
+  /* Stats — let the last cell span nicely */
+  .v1-stats { padding: var(--gap) 0; }
+  .v1-stat { padding: 8px 0; }
+  .v1-stat .n { font-size: 32px; }
+  .v1-stat .l { font-size: 10px; }
+
+  /* Language rows — allow wrapping rather than squeezing three columns */
+  .v1-lang-row { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+  .v1-lang-row .lang { font-size: 17px; }
+
+  /* Section label + h2 spacing on mobile */
+  .v1-section h2 { font-size: clamp(26px, 8vw, 36px); }
+  .v1-contact h2 { font-size: clamp(36px, 11vw, 56px); }
+}

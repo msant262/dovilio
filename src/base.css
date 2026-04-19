@@ -260,7 +260,13 @@ img { display: block; max-width: 100%; }
   padding: 0 40px;
 }
 @media (max-width: 640px) {
-  .container { padding: 0 24px; }
+  .container { padding: 0 20px; }
+}
+
+@media (max-width: 640px) {
+  .chrome { top: 12px; right: 12px; gap: 6px; }
+  .pill-group { padding: 2px; }
+  .pill { padding: 5px 9px; font-size: 10px; min-width: 28px; }
 }
 
 .section-label {
