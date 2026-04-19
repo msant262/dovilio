@@ -263,7 +263,7 @@
                 <div className="section-label">04 · {t.sections.languages} / {t.sections.education}</div>
                 <h2>{lang === "pt" ? "Idiomas e formação." : lang === "de" ? "Sprachen und Ausbildung." : "Languages and education."}</h2>
               </div>
-              <div className="v1-two-col">
+              <div className="v1-info-grid">
                 <div className="v1-block">
                   <h3>{t.sections.languages}</h3>
                   {t.languages.map((l, i) => (
@@ -282,7 +282,9 @@
                       <div className="school">{e.school} · {e.year}</div>
                     </div>
                   ))}
-                  <h3 style={{marginTop: 32}}>{t.sections.certifications}</h3>
+                </div>
+                <div className="v1-block">
+                  <h3>{t.sections.certifications}</h3>
                   {t.certifications.map((cert, i) => (
                     <div className="v1-cert" key={i}>
                       <div className="name">{cert.name}</div>
